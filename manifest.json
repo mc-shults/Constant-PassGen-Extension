@@ -1,0 +1,31 @@
+{
+
+  "manifest_version": 2,
+  "name": "Password Generator",
+  "version": "0.0",
+ 
+  "description": "Password generator",
+  "icons": {
+    "48": "icons/password-48.png",
+	"96": "icons/password-96.png"
+  },
+
+  "permissions": [
+    "activeTab"
+  ],
+  
+  "applications": {
+    "gecko": {
+      "id": "PassGen@ext.mozilla.org",
+      "strict_min_version": "45.0"
+    }
+  },
+
+  "browser_action": {
+    "default_icon": "icons/password-32.png",
+    "default_title": "Password Generator",
+    "default_popup": "popup/pass_gen.html"
+  }
+
+
+}
