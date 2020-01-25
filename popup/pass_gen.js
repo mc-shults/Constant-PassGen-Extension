@@ -26,7 +26,7 @@ let symbolClassMap = {
 			return String.fromCharCode('0'.charCodeAt(0) + index);
 		}
 	},
-	'specialSymbol': {
+	'special-symbol': {
 		size : specSymbols.length,
 		selected: false,
 		getSymbol(index) {
@@ -76,7 +76,6 @@ let algorithms = {
 //#endregion Algorithms
 
 const algorithmName = 'SHA3-256';
-//const algorithmName = 'SHA-256';
 const passwordLength = 8;
 function getChar(value) {
 	console.log(value + '\n');
@@ -84,7 +83,7 @@ function getChar(value) {
 	if (currentIndex < 0){
 		return "?";
 	}
-	while (true) {
+	for (let i = 0; i < 255; i++) {
 		for (let symbolClassPair of Object.entries(symbolClassMap)){
 			let symbolClass = symbolClassPair[1];
 			if (!symbolClass.selected) {
@@ -99,10 +98,13 @@ function getChar(value) {
 			console.log(currentIndex)
 		}
 	}
+	console.error("Endless symbol loop!");
 }
 
 async function calculate(){
-	let srcString = document.getElementById('password').value + document.getElementById('site-string').value;
+	let srcString = document.getElementById('password').value
+		          + document.getElementById('site-string').value
+	              + document.getElementById('login-string').value;
 
 	let hexedArray = await algorithms[algorithmName](srcString);
 	let resultString = "";
@@ -131,55 +133,19 @@ dataChanged = function(event) {
 document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('site-string').addEventListener("keyup", dataChanged);
 
-function showPassword() {
-	var resultElement = document.getElementById("result");
-	resultElement.type = "text";	
-	var togglePasswordElement = document.getElementById("toggle-password");
-	togglePasswordElement.innerHTML = "Hide";
-}
-
-function hidePassword() {
-	var resultElement = document.getElementById("result");
-	resultElement.type = "password";
-	var togglePasswordElement = document.getElementById("toggle-password");
-	togglePasswordElement.innerHTML = "Show";
-}
-
 function showSettings() {
-	var settingsElement = document.getElementById("settings");
-	settingsElement.hidden = false;	
-	var toggleSettingsElement = document.getElementById("toggle-settings");
+	let settingsElement = document.getElementById("settings");
+	settingsElement.hidden = false;
+	let toggleSettingsElement = document.getElementById("toggle-settings");
 	toggleSettingsElement.innerHTML = "Hide";
 }
 
 function hideSettings() {
-	var settingsElement = document.getElementById("settings");
+	let settingsElement = document.getElementById("settings");
 	settingsElement.hidden = true;
-	var toggleSettingsElement = document.getElementById("toggle-settings");
+	let toggleSettingsElement = document.getElementById("toggle-settings");
 	toggleSettingsElement.innerHTML = "Show settings";
 }
-
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("ok")) {
-	calculate();
-  } else if(e.target.classList.contains("eye-show")) {
-	hidePassword();
-	e.target.classList.remove("eye-show");
-	e.target.classList.add("eye-hide");
-  } else if(e.target.classList.contains("eye-hide")) {
-	showPassword();
-	e.target.classList.remove("eye-hide");
-	e.target.classList.add("eye-show");
-  } else if(e.target.classList.contains("open-settings")) {
-	showSettings();
-	e.target.classList.remove("open-settings");
-	e.target.classList.add("close-settings");
-  } else if(e.target.classList.contains("close-settings")) {
-	hideSettings();
-	e.target.classList.remove("close-settings");
-	e.target.classList.add("open-settings");
-  }
-});
 
 function logTabs(tabs) {
     let tab = tabs[0]; // Safe to assume there will only be one result
@@ -187,30 +153,66 @@ function logTabs(tabs) {
 	let hostnameParts = hostname.split('.');
 	document.getElementById('site-string').value = hostnameParts[hostnameParts.length - 2] + "." + hostnameParts[hostnameParts.length - 1];
 }
-
 function onError(err){
     document.getElementById('site-string').value = err;
 }
-
 browser.tabs.query({currentWindow: true, active: true}).then(logTabs, onError);
 document.getElementById('password').select();
-function symbolCheckListener(name) {
-	return function () {
-		browser.storage.local.set(Object.fromEntries([[name, this.checked]]));
-		symbolClassMap[name].selected = this.checked;
-	};
+
+function initAbstractCheck(id, prefName, setPref, setCheck, isCheck, eventType) {
+	let elem = document.getElementById(id);
+	browser.storage.local.get(prefName).then(v => {
+		if (v.hasOwnProperty(prefName)) {
+			let enabled = v[prefName];
+			setPref(enabled);
+			setCheck(elem, enabled);
+		}
+	});
+	elem.addEventListener(eventType, function () {
+		let enabled = isCheck(this);
+		browser.storage.local.set(Object.fromEntries([[prefName, enabled]]));
+		setPref(enabled);
+	});
+}
+
+function initCheck(id, prefName, setPref) {
+	initAbstractCheck(id, prefName, setPref, (elem, enabled) => elem.checked = enabled, elem => elem.checked, 'change')
 }
 function initSymbolCheck(id, symbolName) {
-	let elem = document.getElementById(id);
-	browser.storage.local.get(symbolName).then(v => {
-		let enabled = v[symbolName];
-		symbolClassMap[symbolName].selected = enabled;
-		elem.checked = enabled;
-	});
-	elem.addEventListener('change', symbolCheckListener(symbolName));
-
+	initCheck(id, symbolName, (v) => {symbolClassMap[symbolName].selected = v;});
 }
 initSymbolCheck('check-lowercase', 'lowercase');
 initSymbolCheck('check-uppercase', 'uppercase');
 initSymbolCheck('check-digit', 'digit');
-initSymbolCheck('check-special-symbol', 'specialSymbol');
+initSymbolCheck('check-special-symbol', 'special-symbol');
+
+function initHideButton(id, prefName) {
+	let setPref = function (enabled) {
+		let elem = document.getElementById(id);
+		elem.classList.remove(enabled ? "eye-hide" : "eye-show");
+		elem.classList.add(enabled ? "eye-show" : "eye-hide");
+		let targetInput = document.getElementById(elem.getAttribute("for"));
+		targetInput.type = enabled ? "text" : "password";
+		elem.innerHTML = enabled ? "Hide" : "Show";
+	};
+	let isChecked = e => e.classList.contains("eye-hide");
+	initAbstractCheck(id, prefName, setPref, () => {}, isChecked, 'click')
+}
+
+initHideButton("toggle-site", "hide-site");
+initHideButton("toggle-login", "hide-login");
+initHideButton("toggle-result", "hide-result");
+
+document.addEventListener("click", (e) => {
+	if (e.target.classList.contains("ok")) {
+		calculate();
+	} else if(e.target.classList.contains("open-settings")) {
+		showSettings();
+		e.target.classList.remove("open-settings");
+		e.target.classList.add("close-settings");
+	} else if(e.target.classList.contains("close-settings")) {
+		hideSettings();
+		e.target.classList.remove("close-settings");
+		e.target.classList.add("open-settings");
+	}
+});

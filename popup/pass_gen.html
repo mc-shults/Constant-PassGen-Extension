@@ -21,12 +21,18 @@
           <span class="input-group-text">Site</span>
         </div>
         <input id="site-string" type="text" class="form-control">
+        <div class="input-group-append">
+          <label id="toggle-site" class="input-group-text btn btn-outline-primary eye-show" for="site-string">Hide</label>
+        </div>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <span class="input-group-text">Login</span>
         </div>
         <input id="login-string" type="text" class="form-control" placeholder="optional">
+        <div class="input-group-append">
+          <label id="toggle-login" class="input-group-text btn btn-outline-primary eye-show" for="login-string">Hide</label>
+        </div>
       </div>
       <div class="btn btn-primary col-sm-12 rounded ok mb-2">OK</div>
       <div class="input-group mb-4">
@@ -35,7 +41,7 @@
         </div>
         <input id="result" type="password" class="form-control" >
         <div class="input-group-append">
-          <label id="toggle-password" class="input-group-text btn btn-outline-primary eye-hide">Show</label>
+          <label id="toggle-result" class="input-group-text btn btn-outline-primary eye-hide" for="result">Show</label>
         </div>
       </div>
 	  <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12">Show settings</div>
