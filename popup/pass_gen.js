@@ -127,9 +127,31 @@ dataChanged = function(event) {
 document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('srcString').addEventListener("keyup", dataChanged);
 
+function showPassword() {
+	var resultElement = document.getElementById("result");
+	resultElement.type = "text";	
+	var togglePasswordElement = document.getElementById("toggle-password");
+	togglePasswordElement.innerHTML = "Hide";
+}
+
+function hidePassword() {
+	var resultElement = document.getElementById("result");
+	resultElement.type = "password";
+	var togglePasswordElement = document.getElementById("toggle-password");
+	togglePasswordElement.innerHTML = "Show";
+}
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("ok")) {
 	calculate();
+  } else if(e.target.classList.contains("eye-show")) {
+	hidePassword();
+	e.target.classList.remove("eye-show");
+	e.target.classList.add("eye-hide");
+  } else if(e.target.classList.contains("eye-hide")) {
+	showPassword();
+	e.target.classList.remove("eye-hide");
+	e.target.classList.add("eye-show");
   }
 });
 
