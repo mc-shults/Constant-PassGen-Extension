@@ -178,11 +178,20 @@ document.getElementById('password').select();
 function symbolCheckListener(name) {
 	return function () {
 		browser.storage.local.set(Object.fromEntries([[name, this.checked]]));
-		console.log(symbolClassMap);
 		symbolClassMap[name].selected = this.checked;
 	};
 }
-document.getElementById('checkLowercase').addEventListener('change', symbolCheckListener('lowercase'));
-document.getElementById('checkUppercase').addEventListener('change', symbolCheckListener('uppercase'));
-document.getElementById('checkDigit').addEventListener('change', symbolCheckListener('digit'));
-document.getElementById('checkSpecialSymbol').addEventListener('change', symbolCheckListener('specialSymbol'));
+function initSymbolCheck(id, symbolName) {
+	let elem = document.getElementById(id);
+	browser.storage.local.get(symbolName).then(v => {
+		let enabled = v[symbolName];
+		symbolClassMap[symbolName].selected = enabled;
+		elem.checked = enabled;
+	});
+	elem.addEventListener('change', symbolCheckListener(symbolName));
+
+}
+initSymbolCheck('checkLowercase', 'lowercase');
+initSymbolCheck('checkUppercase', 'uppercase');
+initSymbolCheck('checkDigit', 'digit');
+initSymbolCheck('checkSpecialSymbol', 'specialSymbol');
