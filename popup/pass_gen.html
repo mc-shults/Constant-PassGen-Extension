@@ -4,19 +4,43 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="pass_gen.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   </head>
 
   <body>
-	<input type="checkbox" id="hideResult" checked> Hide result
-	<br>
-    <label for="password">Password </label><input type="password" id="password">
-	<br>
-	<label for="srcString">Source string </label><input id="srcString">
-	<div class="button ok">OK</div>
-	<label for="result">Result </label><input id="result">
-
-    <script src="sha3.js"></script>
+    <div class="p-2 bg-primary text-white header text-center rounded-bottom mb-2">Password Generator</div>
+    <div class="m-1">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Password</span>
+        </div>
+        <input id="password" type="password" class="form-control">
+      </div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Site</span>
+        </div>
+        <input id="srcString" type="text" class="form-control">
+      </div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Login</span>
+        </div>
+        <input id="srcString" type="text" class="form-control" placeholder="optional">
+      </div>
+      <div class="btn btn-primary col-sm-12 rounded ok mb-2">OK</div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Result</span>
+        </div>
+        <input id="result" type="password" class="form-control" >
+        <div class="input-group-append">
+          <label id="toggle-password" class="input-group-text btn btn-outline-primary eye-hide">Show</label>
+        </div>
+      </div>
+    </div>
     <script src="md5.js"></script>
+    <script src="sha3.js"></script>
     <script src="pass_gen.js"></script>
   </body>
 

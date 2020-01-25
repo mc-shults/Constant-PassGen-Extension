@@ -1,19 +1,17 @@
 html, body {
   width: 300px;
+  font-size: 8pt;
 }
 
-.button {
-  margin: 3% auto;
-  padding: 4px;
-  text-align: center;
-  font-size: 1.5em;
-  cursor: pointer;
+.input-group-prepend {
+  width : 20%;
 }
 
-.ok:hover {
-  background-color: #CFF2F2;
+.input-group-prepend span {
+  width: 100%;
+  overflow: hidden;
 }
 
-.ok {
- background-color: #E5F2F2;
+.header {
+  font-size: 11pt;
 }
