@@ -104,6 +104,10 @@ async function calculate(){
 	}
 	let result = document.getElementById('result');
 	result.value = resultString;
+}
+
+function selectResult () {
+	let result = document.getElementById('result');
 	result.select();
 	document.execCommand("copy");
 	if(document.getElementById('hideResult').checked){
@@ -111,19 +115,17 @@ async function calculate(){
 	}
 }
 
-document.getElementById('password').addEventListener("keyup", function(event) {
-  event.preventDefault();
-  if (event.keyCode === 13) {
-    calculate();
-  }
-});
+dataChanged = function(event) {
+	event.preventDefault();
+	calculate().then(() => {
+		if (event.keyCode === 13) {
+			selectResult ()
+		}
+	});
+};
 
-document.getElementById('srcString').addEventListener("keyup", function(event) {
-  event.preventDefault();
-  if (event.keyCode === 13) {
-    calculate();
-  }
-});
+document.getElementById('password').addEventListener("keyup", dataChanged);
+document.getElementById('srcString').addEventListener("keyup", dataChanged);
 
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("ok")) {
