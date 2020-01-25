@@ -1,14 +1,3 @@
-function parseHexString(str) { 
-    let result = [];
-    while (str.length >= 2) { 
-        result.push(parseInt(str.substring(0, 2), 16));
-
-        str = str.substring(2, str.length);
-    }
-
-    return result;
-}
-
 //#region SymbolClasses
 
 let lowercaseClass = {
@@ -59,15 +48,52 @@ function getChar(value) {
 			} else {
 				currentIndex -= symbolClass.size
 			}
-			console.log(currentIndex + ' ananas \n')
+			console.log(currentIndex)
 		}
 	}
 }
 
-function calculate(){
+function parseHexString(str) {
+	let result = [];
+	while (str.length >= 2) {
+		result.push(parseInt(str.substring(0, 2), 16));
+		str = str.substring(2, str.length);
+	}
+	return result;
+}
+
+async function digest(str, algorithm) {
+	const encoder = new TextEncoder();
+	const data = encoder.encode(str);
+	const hashBuffer = await crypto.subtle.digest(algorithm, data)
+	return Array.from(new Uint8Array(hashBuffer));
+}
+
+let algorithms = {
+	"SHA3-256" : async function (str) {
+		return parseHexString(sha3_256(str));
+	},
+	"SHA-256" : async function (str) {
+		return await digest(str, 'SHA-256');
+	},
+	"SHA-512" : async function (str) {
+		return await digest(str, 'SHA-512');
+	},
+	"SHA-1" : async function (str) {
+		return await digest(str, 'SHA-1');
+	},
+	"MD5" : async function (str) {
+		return parseHexString(md5(str));
+	},
+};
+
+const algorithmName = 'SHA3-256';
+//const algorithmName = 'SHA-256';
+
+async function calculate(){
 	let srcString = document.getElementById('password').value + document.getElementById('srcString').value;
 
-	let hexedArray = parseHexString(sha3_256(srcString));
+	let hexedArray = await algorithms[algorithmName](srcString);
 	let resultString = "";
 	for(let i = 0; i < 8; i++){
 		resultString += getChar(hexedArray[i]);
