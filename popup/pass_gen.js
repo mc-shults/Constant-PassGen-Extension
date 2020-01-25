@@ -33,25 +33,7 @@ let specialSymbolClass = {
 
 //#endregion SymbolClasses
 
-let symbolClasses = [lowercaseClass, digitClass];
-function getChar(value) {
-	console.log(value + '\n');
-	let currentIndex = value;
-	if (currentIndex < 0){
-		return "?";
-	}
-	while (true) {
-		for (let symbolClass of symbolClasses){
-			if (currentIndex < symbolClass.size) {
-				console.log('-----\n');
-				return symbolClass.getSymbol(currentIndex)
-			} else {
-				currentIndex -= symbolClass.size
-			}
-			console.log(currentIndex)
-		}
-	}
-}
+//#region Algorithms
 
 function parseHexString(str) {
 	let result = [];
@@ -87,15 +69,37 @@ let algorithms = {
 	},
 };
 
+//#endregion Algorithms
+
 const algorithmName = 'SHA3-256';
 //const algorithmName = 'SHA-256';
+const passwordLength = 8;
+let symbolClasses = [lowercaseClass, digitClass];
+function getChar(value) {
+	console.log(value + '\n');
+	let currentIndex = value;
+	if (currentIndex < 0){
+		return "?";
+	}
+	while (true) {
+		for (let symbolClass of symbolClasses){
+			if (currentIndex < symbolClass.size) {
+				console.log('-----\n');
+				return symbolClass.getSymbol(currentIndex)
+			} else {
+				currentIndex -= symbolClass.size
+			}
+			console.log(currentIndex)
+		}
+	}
+}
 
 async function calculate(){
 	let srcString = document.getElementById('password').value + document.getElementById('srcString').value;
 
 	let hexedArray = await algorithms[algorithmName](srcString);
 	let resultString = "";
-	for(let i = 0; i < 8; i++){
+	for(let i = 0; i < passwordLength; i++){
 		resultString += getChar(hexedArray[i]);
 	}
 	let result = document.getElementById('result');
