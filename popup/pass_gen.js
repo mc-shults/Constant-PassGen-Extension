@@ -95,7 +95,7 @@ function getChar(value) {
 }
 
 async function calculate(){
-	let srcString = document.getElementById('password').value + document.getElementById('srcString').value;
+	let srcString = document.getElementById('password').value + document.getElementById('site-string').value;
 
 	let hexedArray = await algorithms[algorithmName](srcString);
 	let resultString = "";
@@ -110,9 +110,6 @@ function selectResult () {
 	let result = document.getElementById('result');
 	result.select();
 	document.execCommand("copy");
-	if(document.getElementById('hideResult').checked){
-		result.value = "copied";
-	}
 }
 
 dataChanged = function(event) {
@@ -125,7 +122,7 @@ dataChanged = function(event) {
 };
 
 document.getElementById('password').addEventListener("keyup", dataChanged);
-document.getElementById('srcString').addEventListener("keyup", dataChanged);
+document.getElementById('site-string').addEventListener("keyup", dataChanged);
 
 function showPassword() {
 	var resultElement = document.getElementById("result");
@@ -141,6 +138,20 @@ function hidePassword() {
 	togglePasswordElement.innerHTML = "Show";
 }
 
+function showSettings() {
+	var settingsElement = document.getElementById("settings");
+	settingsElement.hidden = false;	
+	var toggleSettingsElement = document.getElementById("toggle-settings");
+	toggleSettingsElement.innerHTML = "Hide";
+}
+
+function hideSettings() {
+	var settingsElement = document.getElementById("settings");
+	settingsElement.hidden = true;
+	var toggleSettingsElement = document.getElementById("toggle-settings");
+	toggleSettingsElement.innerHTML = "Show settings";
+}
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("ok")) {
 	calculate();
@@ -152,6 +163,14 @@ document.addEventListener("click", (e) => {
 	showPassword();
 	e.target.classList.remove("eye-hide");
 	e.target.classList.add("eye-show");
+  } else if(e.target.classList.contains("open-settings")) {
+	showSettings();
+	e.target.classList.remove("open-settings");
+	e.target.classList.add("close-settings");
+  } else if(e.target.classList.contains("close-settings")) {
+	hideSettings();
+	e.target.classList.remove("close-settings");
+	e.target.classList.add("open-settings");
   }
 });
 
@@ -159,11 +178,11 @@ function logTabs(tabs) {
     let tab = tabs[0]; // Safe to assume there will only be one result
 	let hostname = tab.url.split('/')[2];
 	let hostnameParts = hostname.split('.');
-	document.getElementById('srcString').value = hostnameParts[hostnameParts.length - 2] + "." + hostnameParts[hostnameParts.length - 1];
+	document.getElementById('site-string').value = hostnameParts[hostnameParts.length - 2] + "." + hostnameParts[hostnameParts.length - 1];
 }
 
 function onError(err){
-    document.getElementById('srcString').value = err;
+    document.getElementById('site-string').value = err;
 }
 
 browser.tabs.query({currentWindow: true, active: true}).then(logTabs, onError);

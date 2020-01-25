@@ -12,38 +12,62 @@
     <div class="m-1">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Password</span>
+          <span class="input-group-text">Password</span>
         </div>
         <input id="password" type="password" class="form-control">
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Site</span>
+          <span class="input-group-text">Site</span>
         </div>
-        <input id="srcString" type="text" class="form-control">
+        <input id="site-string" type="text" class="form-control">
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Login</span>
+          <span class="input-group-text">Login</span>
         </div>
-        <input id="srcString" type="text" class="form-control" placeholder="optional">
+        <input id="login-string" type="text" class="form-control" placeholder="optional">
       </div>
       <div class="btn btn-primary col-sm-12 rounded ok mb-2">OK</div>
-      <div class="input-group mb-2">
+      <div class="input-group mb-4">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Result</span>
+          <span class="input-group-text">Result</span>
         </div>
         <input id="result" type="password" class="form-control" >
         <div class="input-group-append">
           <label id="toggle-password" class="input-group-text btn btn-outline-primary eye-hide">Show</label>
         </div>
       </div>
-      <label><input type="checkbox" id="checkLowercase">Lowercase</label>
-      <label><input type="checkbox" id="checkUppercase">Uppercase</label>
-      <label><input type="checkbox" id="checkDigit">Digits</label>
-      <label><input type="checkbox" id="checkSpecialSymbol">Special Symbols</label>
-      <br>
-      <label><input id="passwordLength">Password Length</label>
+	  <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12">Show settings</div>
+	  <div id="settings" hidden>
+	    <div class="mb-2 col-sm-12 text-center settings-header">Settings</div>
+	    <div class="text-center mb-3">
+	      <label class="container">Lowercase
+            <input type="checkbox" class="m-1" id="check-lowercase" checked>
+            <span class="checkmark"/>
+          </label>
+	      <label class="container">Uppercase
+            <input type="checkbox" class="m-1" id="check-uppercase">
+            <span class="checkmark"/>
+          </label>
+	      <label class="container">Digits
+            <input type="checkbox" class="m-1" id="check-digit" checked>
+            <span class="checkmark"/>
+          </label>
+	      <label class="container">Special Symbols
+            <input type="checkbox" class="m-1" id="check-special-symbol">
+            <span class="checkmark"/>
+          </label>
+		</div>
+		
+        <label class="mb-1">Password length</label>
+        <div class="mb-2 text-center slider-main">
+		  <span class="slider-number-label">8</span>
+		  <div class="slider">
+		    <input type="range" class="custom-range" min="1" max="32" id="password-length">
+		  </div>
+	    </div>
+	  </div>	  
     </div>
     <script src="md5.js"></script>
     <script src="sha3.js"></script>
