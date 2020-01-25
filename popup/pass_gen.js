@@ -210,7 +210,7 @@ function initSymbolCheck(id, symbolName) {
 	elem.addEventListener('change', symbolCheckListener(symbolName));
 
 }
-initSymbolCheck('checkLowercase', 'lowercase');
-initSymbolCheck('checkUppercase', 'uppercase');
-initSymbolCheck('checkDigit', 'digit');
-initSymbolCheck('checkSpecialSymbol', 'specialSymbol');
+initSymbolCheck('check-lowercase', 'lowercase');
+initSymbolCheck('check-uppercase', 'uppercase');
+initSymbolCheck('check-digit', 'digit');
+initSymbolCheck('check-special-symbol', 'specialSymbol');
