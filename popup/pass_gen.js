@@ -1,33 +1,37 @@
 //#region SymbolClasses
 
-let lowercaseClass = {
-	size : 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1,
-	getSymbol(index) {
-		return String.fromCharCode('a'.charCodeAt(0) + index);
-	}
-};
-
-let uppercaseClass = {
-	size : 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1,
-	getSymbol(index) {
-		return String.fromCharCode('A'.charCodeAt(0) + index);
-	}
-};
-
-let digitClass = {
-	size : '9'.charCodeAt(0) - '0'.charCodeAt(0) + 1,
-	getSymbol(index) {
-		return String.fromCharCode('0'.charCodeAt(0) + index);
-	}
-};
-
 let specSymbols = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',',
 	'-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|',
 	'}', '~'];
-let specialSymbolClass = {
-	size : specSymbols.length,
-	getSymbol(index) {
-		return specSymbols[index];
+
+let symbolClassMap = {
+	'lowercase': {
+		size: 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1,
+		selected: true,
+		getSymbol(index) {
+			return String.fromCharCode('a'.charCodeAt(0) + index);
+		}
+	},
+	'uppercase': {
+		size : 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1,
+		selected: false,
+		getSymbol(index) {
+			return String.fromCharCode('A'.charCodeAt(0) + index);
+		}
+	},
+	'digit': {
+		size : '9'.charCodeAt(0) - '0'.charCodeAt(0) + 1,
+		selected: true,
+		getSymbol(index) {
+			return String.fromCharCode('0'.charCodeAt(0) + index);
+		}
+	},
+	'specialSymbol': {
+		size : specSymbols.length,
+		selected: false,
+		getSymbol(index) {
+			return specSymbols[index];
+		}
 	}
 };
 
@@ -74,7 +78,6 @@ let algorithms = {
 const algorithmName = 'SHA3-256';
 //const algorithmName = 'SHA-256';
 const passwordLength = 8;
-let symbolClasses = [lowercaseClass, digitClass];
 function getChar(value) {
 	console.log(value + '\n');
 	let currentIndex = value;
@@ -82,7 +85,11 @@ function getChar(value) {
 		return "?";
 	}
 	while (true) {
-		for (let symbolClass of symbolClasses){
+		for (let symbolClassPair of Object.entries(symbolClassMap)){
+			let symbolClass = symbolClassPair[1];
+			if (!symbolClass.selected) {
+				continue;
+			}
 			if (currentIndex < symbolClass.size) {
 				console.log('-----\n');
 				return symbolClass.getSymbol(currentIndex)
@@ -114,11 +121,11 @@ function selectResult () {
 
 dataChanged = function(event) {
 	event.preventDefault();
-	calculate().then(() => {
-		if (event.keyCode === 13) {
+	if (event.keyCode === 13) {
+		calculate().then(() => {
 			selectResult ()
-		}
-	});
+		});
+	}
 };
 
 document.getElementById('password').addEventListener("keyup", dataChanged);
@@ -187,3 +194,23 @@ function onError(err){
 
 browser.tabs.query({currentWindow: true, active: true}).then(logTabs, onError);
 document.getElementById('password').select();
+function symbolCheckListener(name) {
+	return function () {
+		browser.storage.local.set(Object.fromEntries([[name, this.checked]]));
+		symbolClassMap[name].selected = this.checked;
+	};
+}
+function initSymbolCheck(id, symbolName) {
+	let elem = document.getElementById(id);
+	browser.storage.local.get(symbolName).then(v => {
+		let enabled = v[symbolName];
+		symbolClassMap[symbolName].selected = enabled;
+		elem.checked = enabled;
+	});
+	elem.addEventListener('change', symbolCheckListener(symbolName));
+
+}
+initSymbolCheck('checkLowercase', 'lowercase');
+initSymbolCheck('checkUppercase', 'uppercase');
+initSymbolCheck('checkDigit', 'digit');
+initSymbolCheck('checkSpecialSymbol', 'specialSymbol');
