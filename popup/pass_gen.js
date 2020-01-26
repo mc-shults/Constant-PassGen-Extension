@@ -199,6 +199,21 @@ loadPreference("algorithm-name", v => {
         algorithmName = v.target.selectedOptions[0].value;
         storePreference([["algorithm-name", algorithmName]]);
     });
-} );
+});
 
+let savePassword = false;
 
+loadPreference("main-password", p => {if (p) document.getElementById("password").value = p; } )
+
+initCheck("check-save-password", "save-password", (v) => {
+    savePassword = v;
+    let mainPassword = savePassword ? document.getElementById("password").value : "";
+    storePreference([["main-password", mainPassword]]);
+});
+document.getElementById("password").addEventListener("keyup", _ => {
+    loadPreference("save-password", save => {
+        if (save) {
+            storePreference([["main-password", document.getElementById("password").value]]);
+        }
+    });
+});
