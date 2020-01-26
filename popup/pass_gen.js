@@ -5,34 +5,38 @@ let specSymbols = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',',
     '}', '~'];
 
 let symbolClassMap = {
-    'lowercase': {
-        size: 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1,
-        selected: true,
-        getSymbol(index) {
-            return String.fromCharCode('a'.charCodeAt(0) + index);
-        }
-    },
-    'uppercase': {
-        size : 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1,
-        selected: false,
-        getSymbol(index) {
-            return String.fromCharCode('A'.charCodeAt(0) + index);
-        }
-    },
-    'digit': {
-        size : '9'.charCodeAt(0) - '0'.charCodeAt(0) + 1,
-        selected: true,
-        getSymbol(index) {
-            return String.fromCharCode('0'.charCodeAt(0) + index);
-        }
-    },
-    'special-symbol': {
-        size : specSymbols.length,
-        selected: false,
-        getSymbol(index) {
-            return specSymbols[index];
-        }
-    }
+	'lowercase': {
+		size: 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1,
+		selected: true,
+		used: false,
+		getSymbol(index) {
+			return String.fromCharCode('a'.charCodeAt(0) + index);
+		}
+	},
+	'uppercase': {
+		size : 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1,
+		selected: false,
+		used: false,
+		getSymbol(index) {
+			return String.fromCharCode('A'.charCodeAt(0) + index);
+		}
+	},
+	'digit': {
+		size : '9'.charCodeAt(0) - '0'.charCodeAt(0) + 1,
+		selected: true,
+		used: false,
+		getSymbol(index) {
+			return String.fromCharCode('0'.charCodeAt(0) + index);
+		}
+	},
+	'special-symbol': {
+		size : specSymbols.length,
+		selected: false,
+		used: false,
+		getSymbol(index) {
+			return specSymbols[index];
+		}
+	}
 };
 
 //#endregion SymbolClasses
@@ -51,7 +55,7 @@ function parseHexString(str) {
 async function digest(str, algorithm) {
     const encoder = new TextEncoder();
     const data = encoder.encode(str);
-    const hashBuffer = await crypto.subtle.digest(algorithm, data)
+    const hashBuffer = await crypto.subtle.digest(algorithm, data);
     return Array.from(new Uint8Array(hashBuffer));
 }
 
@@ -76,43 +80,61 @@ let algorithms = {
 //#endregion Algorithms
 
 const algorithmName = 'SHA3-256';
-const passwordLength = 8;
+const passwordLength = 4;
 function getChar(value) {
-    console.log(value + '\n');
-    let currentIndex = value;
-    if (currentIndex < 0){
-        return "?";
-    }
-    for (let i = 0; i < 255; i++) {
-        for (let symbolClassPair of Object.entries(symbolClassMap)){
-            let symbolClass = symbolClassPair[1];
-            if (!symbolClass.selected) {
-                continue;
-            }
-            if (currentIndex < symbolClass.size) {
-                console.log('-----\n');
-                return symbolClass.getSymbol(currentIndex)
-            } else {
-                currentIndex -= symbolClass.size
-            }
-            console.log(currentIndex)
-        }
-    }
-    console.error("Endless symbol loop!");
+	let currentIndex = value;
+	if (currentIndex < 0){
+		return "?";
+	}
+	for (let i = 0; i < 255; i++) {
+		for (let symbolClassPair of Object.entries(symbolClassMap)){
+			let symbolClass = symbolClassPair[1];
+			if (!symbolClass.selected) {
+				continue;
+			}
+			if (currentIndex < symbolClass.size) {
+				symbolClassMap[symbolClassPair[0]].used = true;
+				return symbolClass.getSymbol(currentIndex)
+			} else {
+				currentIndex -= symbolClass.size
+			}
+		}
+	}
 }
 
-async function calculate(){
-    let srcString = document.getElementById('password').value
-                  + document.getElementById('site-string').value
-                  + document.getElementById('login-string').value;
+async function generatePassword(srcString, iteration) {
+	console.log(iteration);
+	console.log(srcString);
+	if (iteration > 1024) {
+		return "";
+	}
+	for (let key in symbolClassMap) {
+		symbolClassMap[key].used = false;
+	}
+	let hexedArray = await algorithms[algorithmName](srcString);
+	let resultString = "";
+	for(let i = 0; i < passwordLength; i++){
+		resultString += getChar(hexedArray[i]);
+	}
+	let allUsed = true;
+	for (let key in symbolClassMap) {
+		allUsed &= !symbolClassMap[key].selected || symbolClassMap[key].used;
+	}
+	if (allUsed) {
+		return resultString;
+	} else {
+		console.log(resultString);
+		return generatePassword(srcString + hexedArray.reduce((accum, val) => accum + ("00" + val.toString(16)).slice(-2) ,""), iteration+1)
+	}
+}
 
-    let hexedArray = await algorithms[algorithmName](srcString);
-    let resultString = "";
-    for(let i = 0; i < passwordLength; i++){
-        resultString += getChar(hexedArray[i]);
-    }
-    let result = document.getElementById('result');
-    result.value = resultString;
+async function updateResult(){
+	let srcString = document.getElementById('password').value
+		+ document.getElementById('site-string').value
+		+ document.getElementById('login-string').value;
+	let resultString = await generatePassword(srcString, 0);
+	let result = document.getElementById('result');
+	result.value = resultString;
 }
 
 function selectResult () {
@@ -124,7 +146,7 @@ function selectResult () {
 dataChanged = function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
-        calculate().then(() => {
+		updateResult().then(() => {
             selectResult ()
         });
     }
@@ -132,6 +154,7 @@ dataChanged = function(event) {
 
 document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('site-string').addEventListener("keyup", dataChanged);
+document.getElementById('login-string').addEventListener("keyup", dataChanged);
 
 function showSettings() {
     let settingsElement = document.getElementById("settings");
