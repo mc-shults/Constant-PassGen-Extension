@@ -55,7 +55,7 @@ function parseHexString(str) {
 async function digest(str, algorithm) {
     const encoder = new TextEncoder();
     const data = encoder.encode(str);
-    const hashBuffer = await crypto.subtle.digest(algorithm, data)
+    const hashBuffer = await crypto.subtle.digest(algorithm, data);
     return Array.from(new Uint8Array(hashBuffer));
 }
 
@@ -146,7 +146,7 @@ function selectResult () {
 dataChanged = function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
-        calculate().then(() => {
+		updateResult().then(() => {
             selectResult ()
         });
     }
