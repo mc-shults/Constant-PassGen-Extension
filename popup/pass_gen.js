@@ -154,6 +154,7 @@ dataChanged = function(event) {
 
 document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('site-string').addEventListener("keyup", dataChanged);
+document.getElementById('login-string').addEventListener("keyup", dataChanged);
 
 function showSettings() {
     let settingsElement = document.getElementById("settings");
