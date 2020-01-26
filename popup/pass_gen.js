@@ -1,3 +1,23 @@
+const copyToClipboard = str => {
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected =
+        document.getSelection().rangeCount > 0
+            ? document.getSelection().getRangeAt(0)
+            : false;
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (selected) {
+        document.getSelection().removeAllRanges();
+        document.getSelection().addRange(selected);
+    }
+};
+
 async function updateResult(){
 	let srcString = document.getElementById('password').value
 		+ document.getElementById('site-string').value
@@ -5,6 +25,9 @@ async function updateResult(){
 	let resultString = await generatePassword(srcString, 0);
 	let result = document.getElementById('result');
 	result.value = resultString;
+	if (copyResultToClipboard) {
+        copyToClipboard(resultString);
+    }
 }
 
 function selectResult () {
@@ -217,3 +240,7 @@ document.getElementById("password").addEventListener("keyup", _ => {
         }
     });
 });
+
+let copyResultToClipboard = false;
+
+initCheck("check-copy-to-clipboard", "copy-to-clipboard", (v) => copyResultToClipboard = v);
