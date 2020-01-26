@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <div class="p-2 bg-primary text-white header text-center rounded-bottom mb-2">Password Generator</div>
+    <div class="p-2 bg-primary text-white header text-center rounded-bottom mb-2">Constant PassGen</div>
     <div class="m-1">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
@@ -51,7 +51,10 @@
         <input id="result" type="password" class="form-control" >
         <div id="toggle-result" class="input-group-append input-group-text btn btn-outline-primary eye-hide" for="result"></div>
       </div>
-    <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">Show settings</div>
+    <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">
+      <span lang="en">Show Settings</span>
+      <span lang="ru">Показать настройки</span>
+    </div>
 	  <div id="settings" hidden>
 	    <div class="text-center mb-3">
 	      <label class="container-checkbox container">
@@ -62,7 +65,7 @@
           </label>
 	      <label class="container container-checkbox">
             <span lang="en">Lowercase</span>
-            <span lang="ru">Прописные буквы</span>
+            <span lang="ru">Прописные Буквы</span>
             <input type="checkbox" class="m-1" id="check-uppercase">
             <span class="checkmark"/>
           </label>
@@ -74,14 +77,14 @@
           </label>
 	      <label class="container container-checkbox">
             <span lang="en">Special Symbols</span>
-            <span lang="ru">Специальные символы</span>
+            <span lang="ru">Специальные Символы</span>
             <input type="checkbox" class="m-1" id="check-special-symbol">
             <span class="checkmark"/>
           </label>
         </div>
         <label class="mb-1">
-          <span lang="en">Password length</span>
-          <span lang="ru">Длина пароля</span>
+          <span lang="en">Password Дength</span>
+          <span lang="ru">Длина Пароля</span>
         </label>
         <div class="mb-2 text-center slider-main">
           <div >
@@ -104,9 +107,15 @@
         </select>
         <div>
           <label class="container-checkbox container">
-              <span lang="en">Save main password</span>
-              <span lang="ru">Сохранить основной пароль</span>
-            <input type="checkbox" class="m-1" id="check-save-password" checked>
+              <span lang="en">Save Main Password</span>
+              <span lang="ru">Сохранить Основной Пароль</span>
+            <input type="checkbox" id="check-save-password" unchecked >
+            <span class="checkmark"/>
+          </label>
+          <label class="container-checkbox container">
+            <span lang="en">Copy to Clipboard</span>
+            <span lang="ru">Копировать в буфер обмена</span>
+            <input type="checkbox" id="check-copy-to-clipboard" unchecked >
             <span class="checkmark"/>
           </label>
         </div>

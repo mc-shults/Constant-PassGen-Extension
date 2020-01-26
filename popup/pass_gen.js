@@ -1,3 +1,23 @@
+const copyToClipboard = str => {
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected =
+        document.getSelection().rangeCount > 0
+            ? document.getSelection().getRangeAt(0)
+            : false;
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (selected) {
+        document.getSelection().removeAllRanges();
+        document.getSelection().addRange(selected);
+    }
+};
+
 async function updateResult(){
 	let srcString = document.getElementById('password').value
 		+ document.getElementById('site-string').value
@@ -5,6 +25,9 @@ async function updateResult(){
 	let resultString = await generatePassword(srcString, 0);
 	let result = document.getElementById('result');
 	result.value = resultString;
+	if (copyResultToClipboard) {
+        copyToClipboard(resultString);
+    }
 }
 
 function localize(language)
@@ -51,7 +74,13 @@ function logTabs(tabs) {
     let tab = tabs[0]; // Safe to assume there will only be one result
     let hostname = tab.url.split('/')[2];
     let hostnameParts = hostname.split('.');
-    document.getElementById('site-string').value = hostnameParts[hostnameParts.length - 2] + "." + hostnameParts[hostnameParts.length - 1];
+    let site = hostnameParts[hostnameParts.length - 2];
+    if (site) {
+        site += "." + hostnameParts[hostnameParts.length - 1];
+    } else {
+        site = hostnameParts[hostnameParts.length - 1];
+    }
+    document.getElementById('site-string').value = site;
 }
 function onError(err){
     document.getElementById('site-string').value = err;
@@ -125,7 +154,7 @@ function getEyeIcon(show)
     return `<img class="eye-icon" src="${imrUrl}">`;
 }
 
-function initHideButton(id, prefName) {
+function initHideButton(id, prefName, defaultState) {
     let setPref = function (enabled) {
         let elem = document.getElementById(id);
         elem.classList.remove(enabled ? "eye-hide" : "eye-show");
@@ -134,14 +163,15 @@ function initHideButton(id, prefName) {
         targetInput.type = enabled ? "password" : "text";
         elem.innerHTML = getEyeIcon(enabled);
     };
+    setPref(defaultState);
     let isChecked = e => e.classList.contains("eye-hide");
     initAbstractCheck(id, prefName, setPref, () => {}, isChecked, 'click')
 }
 
-initHideButton("toggle-main-password", "hide-main-password");
-initHideButton("toggle-site", "hide-site");
-initHideButton("toggle-login", "hide-login");
-initHideButton("toggle-result", "hide-result");
+initHideButton("toggle-main-password", "hide-main-password", true);
+initHideButton("toggle-site", "hide-site", false);
+initHideButton("toggle-login", "hide-login", false);
+initHideButton("toggle-result", "hide-result", false);
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("ok")) {
@@ -213,4 +243,26 @@ loadPreference("algorithm-name", v => {
         algorithmName = v.target.selectedOptions[0].value;
         storePreference([["algorithm-name", algorithmName]]);
     });
-} );
+});
+
+let savePassword = false;
+
+loadPreference("main-password", p => {if (p) document.getElementById("password").value = p; } )
+
+initCheck("check-save-password", "save-password", (v) => {
+    savePassword = v;
+    let mainPassword = savePassword ? document.getElementById("password").value : "";
+    storePreference([["main-password", mainPassword]]);
+});
+document.getElementById("password").addEventListener("keyup", _ => {
+    loadPreference("save-password", save => {
+        if (save) {
+            storePreference([["main-password", document.getElementById("password").value]]);
+        }
+    });
+});
+
+let copyResultToClipboard = false;
+
+initCheck("check-copy-to-clipboard", "copy-to-clipboard", (v) => copyResultToClipboard = v);
+
