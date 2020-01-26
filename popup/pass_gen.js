@@ -30,6 +30,20 @@ async function updateResult(){
     }
 }
 
+function localize(language)
+{
+  let russian = language.includes('ru');
+  document.querySelectorAll("span").forEach(function (node) {
+    if (!node.hasAttribute('lang'))
+      return;
+    let langAttribute = node.getAttribute('lang');
+    if ((langAttribute === 'ru') !== russian)
+      node.style.display = 'none';
+   });
+}
+
+localize(navigator.language);
+
 function selectResult () {
     let result = document.getElementById('result');
     result.select();
@@ -251,3 +265,4 @@ document.getElementById("password").addEventListener("keyup", _ => {
 let copyResultToClipboard = false;
 
 initCheck("check-copy-to-clipboard", "copy-to-clipboard", (v) => copyResultToClipboard = v);
+

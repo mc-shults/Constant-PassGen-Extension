@@ -12,21 +12,30 @@
     <div class="m-1">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text">Password</span>
+          <span class="input-group-text">
+            <span lang="en">Password</span>
+            <span lang="ru">Пароль</span>
+          </span>
         </div>
         <input id="password" type="password" class="form-control">
         <div id="toggle-main-password" class="input-group-append input-group-text btn btn-outline-primary eye-hide" for="password"></div>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text">Site</span>
+          <span class="input-group-text">
+            <span lang="en">Site</span>
+            <span lang="ru">Сайт</span>
+          </span>
         </div>
         <input id="site-string" type="text" class="form-control">
         <div id="toggle-site" class="input-group-append input-group-text btn btn-outline-primary eye-show" for="site-string"></div>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text">Login</span>
+           <span class="input-group-text">
+            <span lang="en">Login</span>
+            <span lang="ru">Логин</span>
+          </span>
         </div>
         <input id="login-string" type="text" class="form-control" placeholder="optional">
         <div id="toggle-login" class="input-group-append input-group-text btn btn-outline-primary eye-show" for="login-string"></div>
@@ -34,32 +43,49 @@
       <div class="btn btn-primary col-sm-12 rounded ok mb-2">OK</div>
       <div class="input-group mb-4">
         <div class="input-group-prepend">
-          <span class="input-group-text">Result</span>
+          <span class="input-group-text">
+            <span lang="en">Result</span>
+            <span lang="ru">Результат</span>
+          </span>
         </div>
         <input id="result" type="password" class="form-control" >
         <div id="toggle-result" class="input-group-append input-group-text btn btn-outline-primary eye-hide" for="result"></div>
       </div>
-    <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">Show Settings</div>
+    <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">
+      <span lang="en">Show Settings</span>
+      <span lang="ru">Показать настройки</span>
+    </div>
 	  <div id="settings" hidden>
 	    <div class="text-center mb-3">
-	      <label class="container-checkbox container">Lowercase
+	      <label class="container-checkbox container">
+            <span lang="en">Lowercase</span>
+            <span lang="ru">Строчные буквы</span>
             <input type="checkbox" class="m-1" id="check-lowercase" checked>
             <span class="checkmark"/>
           </label>
-	      <label class="container container-checkbox">Uppercase
+	      <label class="container container-checkbox">
+            <span lang="en">Lowercase</span>
+            <span lang="ru">Прописные Буквы</span>
             <input type="checkbox" class="m-1" id="check-uppercase">
             <span class="checkmark"/>
           </label>
-	      <label class="container container-checkbox">Digits
+	      <label class="container container-checkbox">
+            <span lang="en">Digits</span>
+            <span lang="ru">Цифры</span>
             <input type="checkbox" class="m-1" id="check-digit" checked>
             <span class="checkmark"/>
           </label>
-	      <label class="container container-checkbox">Special Symbols
+	      <label class="container container-checkbox">
+            <span lang="en">Special Symbols</span>
+            <span lang="ru">Специальные Символы</span>
             <input type="checkbox" class="m-1" id="check-special-symbol">
             <span class="checkmark"/>
           </label>
         </div>
-        <label class="mb-1">Password Length</label>
+        <label class="mb-1">
+          <span lang="en">Password Length</span>
+          <span lang="ru">Длина Пароля</span>
+        </label>
         <div class="mb-2 text-center slider-main">
           <div >
             <input type="number" id="password-length-number" class="border rounded slider-number-label" min="1" max="32" value="8"/>
@@ -68,8 +94,11 @@
             <input type="range" class="custom-range" min="1" max="32" value="8" id="password-length-slider">
           </div>
         </div>
-        <label for="hash-algorithm">Algorithm: </label>
-        <select class="dropdown btn btn-outline-secondary mb-2" id="hash-algorithm">
+        <label for="hash-algorithm">
+          <span lang="en">algorithm:</span>
+          <span lang="ru">алгоритм:</span>
+        </label>
+        <select class="dropdown btn btn-outlinsecondary mb-2" id="hash-algorithm">
           <option class="dropdown-item" value="SHA3-256">SHA3-256</option>
           <option class="dropdown-item" value="SHA-256">SHA-256</option>
           <option class="dropdown-item" value="SHA-512">SHA-512</option>
@@ -77,11 +106,15 @@
           <option class="dropdown-item" value="MD5">MD5</option>
         </select>
         <div>
-          <label class="container-checkbox container">Save Main Password
+          <label class="container-checkbox container">
+              <span lang="en">Save Main Password</span>
+              <span lang="ru">Сохранить Основной Пароль</span>
             <input type="checkbox" id="check-save-password" unchecked >
             <span class="checkmark"/>
           </label>
-          <label class="container-checkbox container">Copy to Clipboard
+          <label class="container-checkbox container">
+            <span lang="en">Copy to Clipboard</span>
+            <span lang="ru">Копировать в буфер обмена</span>
             <input type="checkbox" id="check-copy-to-clipboard" unchecked >
             <span class="checkmark"/>
           </label>
