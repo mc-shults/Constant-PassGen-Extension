@@ -18,6 +18,8 @@ const copyToClipboard = str => {
     }
 };
 
+let russian = navigator.language.includes('ru');
+
 async function updateResult(){
 	let srcString = document.getElementById('password').value
 		+ document.getElementById('site-string').value
@@ -30,9 +32,7 @@ async function updateResult(){
     }
 }
 
-function localize(language)
-{
-    let russian = language.includes('ru');
+function localize() {
     document.querySelectorAll("span").forEach(function (node) {
         if (!node.hasAttribute('lang'))
             return;
@@ -42,7 +42,7 @@ function localize(language)
      });
 }
 
-localize(navigator.language);
+localize();
 
 function selectResult () {
     let result = document.getElementById('result');
@@ -67,7 +67,13 @@ function toggleSettings() {
     let settingsElement = document.getElementById("settings");
     settingsElement.hidden ^= true;
     let toggleSettingsElement = document.getElementById("toggle-settings");
-    toggleSettingsElement.innerHTML = settingsElement.hidden ? "Show settings" : "Hide settings";
+    let result = "";
+    if (settingsElement.hidden) {
+        result = russian ? "Показать настройки" : "Show settings";
+    } else {
+        result = russian ? "Скрыть настройки" : "Hide settings";
+    }
+    toggleSettingsElement.innerHTML = result;
 }
 
 function logTabs(tabs) {
