@@ -102,6 +102,10 @@ function getChar(value) {
     }
 }
 
+function getSelectedSymbolClassCount() {
+    return Object.values(symbolClassMap).filter(x => x.selected).length;
+}
+
 async function generatePassword(srcString, iteration) {
     if (iteration > 1024) {
         return "";
@@ -111,7 +115,9 @@ async function generatePassword(srcString, iteration) {
     }
     let hexedArray = await algorithms[algorithmName](srcString);
     let resultString = "";
-    console.log(passwordLength);
+    if (passwordLength === 0 || getSelectedSymbolClassCount() === 0) {
+        return "";
+    }
     for(let i = 0; i < passwordLength; i++){
         resultString += getChar(hexedArray[i]);
     }
