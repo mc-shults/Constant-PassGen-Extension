@@ -254,7 +254,7 @@ initHideButton("toggle-result", "hide-result");
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("ok")) {
-        calculate();
+        updateResult();
     } else if(e.target.classList.contains("open-settings")) {
         showSettings();
         e.target.classList.remove("open-settings");
