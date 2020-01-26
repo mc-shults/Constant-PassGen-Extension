@@ -122,7 +122,7 @@ function initHideButton(id, prefName) {
     initAbstractCheck(id, prefName, setPref, () => {}, isChecked, 'click')
 }
 
-initHideButton("toggle-main-password", "hide-site");
+initHideButton("toggle-main-password", "hide-main-password");
 initHideButton("toggle-site", "hide-site");
 initHideButton("toggle-login", "hide-login");
 initHideButton("toggle-result", "hide-result");
