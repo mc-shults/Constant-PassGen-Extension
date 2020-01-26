@@ -140,7 +140,7 @@ function getEyeIcon(show)
     return `<img class="eye-icon" src="${imrUrl}">`;
 }
 
-function initHideButton(id, prefName) {
+function initHideButton(id, prefName, defaultState) {
     let setPref = function (enabled) {
         let elem = document.getElementById(id);
         elem.classList.remove(enabled ? "eye-hide" : "eye-show");
@@ -149,14 +149,15 @@ function initHideButton(id, prefName) {
         targetInput.type = enabled ? "password" : "text";
         elem.innerHTML = getEyeIcon(enabled);
     };
+    setPref(defaultState);
     let isChecked = e => e.classList.contains("eye-hide");
     initAbstractCheck(id, prefName, setPref, () => {}, isChecked, 'click')
 }
 
-initHideButton("toggle-main-password", "hide-main-password");
-initHideButton("toggle-site", "hide-site");
-initHideButton("toggle-login", "hide-login");
-initHideButton("toggle-result", "hide-result");
+initHideButton("toggle-main-password", "hide-main-password", true);
+initHideButton("toggle-site", "hide-site", false);
+initHideButton("toggle-login", "hide-login", false);
+initHideButton("toggle-result", "hide-result", false);
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("ok")) {
