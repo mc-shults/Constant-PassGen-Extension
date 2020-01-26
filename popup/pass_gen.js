@@ -266,23 +266,14 @@ document.addEventListener("click", (e) => {
     }
 });
 
-function initSlider(sliderId, valueId, eventType) {
+function syncInput(sliderId, valueId, eventType) {
     let sliderElement = document.getElementById(sliderId);
     sliderElement.addEventListener(eventType, function () {
         let valueElement = document.getElementById(valueId);
-        valueElement.innerHTML = sliderElement.value;
+        valueElement.value = sliderElement.value;
     });
 }
 
-function initSliderLabel(valueId, sliderId, eventType) {
-	let valueElement = document.getElementById(valueId);
-    valueElement.addEventListener(eventType, function () {
-		let sliderElement = document.getElementById(sliderId);
-        sliderElement.value = valueElement.value;
-    });
-}
-
-initSlider("slider-range", "slider-number", "change");
-initSlider("slider-range", "slider-number", "input");
-
-initSliderLabel("slider-number", "slider-range", "input");
+syncInput("slider-range", "slider-number", "change");
+syncInput("slider-range", "slider-number", "input");
+syncInput("slider-number", "slider-range", "input");
