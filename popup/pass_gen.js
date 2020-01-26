@@ -106,7 +106,9 @@ initSymbolCheck('check-special-symbol', 'special-symbol');
 
 function getEyeIcon(show)
 {
-    return "<img class=\"eye-icon\" src=\"..\\icons\\" + (show ? "show-password-icon.png" : "hide-password-icon.png") + "\"\\>";
+    let browserApi = chrome || browser;
+    let imrUrl = browserApi.extension.getURL("icons/" +  (show ? "show-password-icon.png" : "hide-password-icon.png"));
+    return `<img class="eye-icon" src="${imrUrl}">`;
 }
 
 function initHideButton(id, prefName) {
