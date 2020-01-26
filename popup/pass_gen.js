@@ -133,18 +133,19 @@ document.addEventListener("click", (e) => {
     }
 });
 
-function syncInput(sliderId, valueId, eventType, additionalCallback) {
-    let sliderElement = document.getElementById(sliderId);
-    sliderElement.addEventListener(eventType, function () {
-        let valueElement = document.getElementById(valueId);
-        valueElement.value = sliderElement.value;
-        additionalCallback(sliderElement.value);
+function syncInput(srcId, destId, eventType, additionalCallback) {
+    let srcElement = document.getElementById(srcId);
+    srcElement.addEventListener(eventType, function () {
+        let destElement = document.getElementById(destId);
+        if (srcElement.validity.valid) {
+            destElement.value = srcElement.value;
+            additionalCallback(srcElement.value);
+        }
     });
 }
 
 let passwordChanged = v => {
     storePreference([["password-length", v]]);
-    console.log(v);
     passwordLength = v;
 };
 syncInput("password-length-slider", "password-length-number", "change", passwordChanged);
