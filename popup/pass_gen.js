@@ -26,18 +26,15 @@ document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('site-string').addEventListener("keyup", dataChanged);
 document.getElementById('login-string').addEventListener("keyup", dataChanged);
 
-function showSettings() {
-    let settingsElement = document.getElementById("settings");
-    settingsElement.hidden = false;
-    let toggleSettingsElement = document.getElementById("toggle-settings");
-    toggleSettingsElement.innerHTML = "Hide";
+function getSelectedSymbolClassCount() {
+    return Object.values(symbolClassMap).filter(x => x.selected).length;
 }
 
-function hideSettings() {
+function toggleSettings() {
     let settingsElement = document.getElementById("settings");
-    settingsElement.hidden = true;
+    settingsElement.hidden ^= true;
     let toggleSettingsElement = document.getElementById("toggle-settings");
-    toggleSettingsElement.innerHTML = "Show settings";
+    toggleSettingsElement.innerHTML = settingsElement.hidden ? "Show settings" : "Hide settings";
 }
 
 function logTabs(tabs) {
@@ -126,11 +123,11 @@ document.addEventListener("click", (e) => {
     if (e.target.classList.contains("ok")) {
         updateResult();
     } else if(e.target.classList.contains("open-settings")) {
-        showSettings();
+        toggleSettings();
         e.target.classList.remove("open-settings");
         e.target.classList.add("close-settings");
     } else if(e.target.classList.contains("close-settings")) {
-        hideSettings();
+        toggleSettings();
         e.target.classList.remove("close-settings");
         e.target.classList.add("open-settings");
     }
