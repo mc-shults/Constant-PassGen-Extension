@@ -1,10 +1,10 @@
 {
 
   "manifest_version": 2,
-  "name": "Password Generator",
+  "name": "Constant PassGen",
   "version": "0.0",
  
-  "description": "Password generator",
+  "description": "Constant PassGen",
   "icons": {
     "48": "icons/ConstPassGen48.png",
 	"96": "icons/ConstPassGen96.png"
@@ -25,7 +25,7 @@
 
   "browser_action": {
     "default_icon": "icons/ConstPassGen32.png",
-    "default_title": "Password Generator",
+    "default_title": "Constant PassGen",
     "default_popup": "popup/pass_gen.html"
   }
 
