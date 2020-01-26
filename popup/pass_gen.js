@@ -144,6 +144,6 @@ function syncInput(sliderId, valueId, eventType) {
     });
 }
 
-syncInput("slider-range", "slider-number", "change");
-syncInput("slider-range", "slider-number", "input");
-syncInput("slider-number", "slider-range", "input");
+syncInput("password-length-slider", "password-length-number", "change");
+syncInput("password-length-slider", "password-length-number", "input");
+syncInput("password-length-number", "password-length-slider", "input");
