@@ -32,14 +32,14 @@ async function updateResult(){
 
 function localize(language)
 {
-  let russian = language.includes('ru');
-  document.querySelectorAll("span").forEach(function (node) {
-    if (!node.hasAttribute('lang'))
-      return;
-    let langAttribute = node.getAttribute('lang');
-    if ((langAttribute === 'ru') !== russian)
-      node.style.display = 'none';
-   });
+    let russian = language.includes('ru');
+    document.querySelectorAll("span").forEach(function (node) {
+        if (!node.hasAttribute('lang'))
+            return;
+        let langAttribute = node.getAttribute('lang');
+        if ((langAttribute === 'ru') !== russian)
+            node.style.display = 'none';
+     });
 }
 
 localize(navigator.language);
@@ -235,8 +235,6 @@ function symbolCountChanged(count) {
 loadPreference("algorithm-name", v => {
     if (v !== undefined) algorithmName = v;
     for (let option of document.getElementById("hash-algorithm").options) {
-        console.log(option.value === algorithmName);
-        console.log(option.value);
         option.selected = option.value === algorithmName;
     }
     document.getElementById("hash-algorithm").addEventListener("change", v => {
