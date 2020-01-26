@@ -6,8 +6,8 @@
  
   "description": "Password generator",
   "icons": {
-    "48": "icons/password-48.png",
-	"96": "icons/password-96.png"
+    "48": "icons/ConstPassGen48.png",
+	"96": "icons/ConstPassGen96.png"
   },
 
   "permissions": [
@@ -24,7 +24,7 @@
   },
 
   "browser_action": {
-    "default_icon": "icons/password-32.png",
+    "default_icon": "icons/ConstPassGen32.png",
     "default_title": "Password Generator",
     "default_popup": "popup/pass_gen.html"
   }
