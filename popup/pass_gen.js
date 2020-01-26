@@ -173,17 +173,22 @@ initHideButton("toggle-site", "hide-site", false);
 initHideButton("toggle-login", "hide-login", false);
 initHideButton("toggle-result", "hide-result", false);
 
-document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("ok")) {
-        updateResult();
-    } else if(e.target.classList.contains("open-settings")) {
+document.getElementById("toggle-settings").addEventListener("click", (e) => {
+    let elem = document.getElementById("toggle-settings");
+    if(elem.classList.contains("open-settings")) {
         toggleSettings();
         e.target.classList.remove("open-settings");
         e.target.classList.add("close-settings");
-    } else if(e.target.classList.contains("close-settings")) {
+    } else if(elem.classList.contains("close-settings")) {
         toggleSettings();
         e.target.classList.remove("close-settings");
         e.target.classList.add("open-settings");
+    }
+});
+
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("ok")) {
+        updateResult();
     }
 });
 
