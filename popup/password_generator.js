@@ -107,6 +107,7 @@ function getSelectedSymbolClassCount() {
 }
 
 function generatePassword(srcString, iteration) {
+    console.log(srcString);
     if (iteration > 1024) {
         return "";
     }

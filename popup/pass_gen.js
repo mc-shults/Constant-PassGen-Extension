@@ -73,7 +73,7 @@ function toggleSettings() {
     } else {
         result = russian ? "Скрыть настройки" : "Hide settings";
     }
-    toggleSettingsElement.innerHTML = result;
+    toggleSettingsElement.innerText = result;
 }
 
 function logTabs(tabs) {
