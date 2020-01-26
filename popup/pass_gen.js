@@ -7,6 +7,20 @@ async function updateResult(){
 	result.value = resultString;
 }
 
+function localize(language)
+{
+  let russian = language.includes('ru');
+  document.querySelectorAll("span").forEach(function (node) {
+    if (!node.hasAttribute('lang'))
+      return;
+    let langAttribute = node.getAttribute('lang');
+    if ((langAttribute === 'ru') !== russian)
+      node.style.display = 'none';
+   });
+}
+
+localize(navigator.language);
+
 function selectResult () {
     let result = document.getElementById('result');
     result.select();
@@ -200,5 +214,3 @@ loadPreference("algorithm-name", v => {
         storePreference([["algorithm-name", algorithmName]]);
     });
 } );
-
-
