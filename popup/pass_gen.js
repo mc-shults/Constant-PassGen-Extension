@@ -102,19 +102,25 @@ initSymbolCheck('check-uppercase', 'uppercase');
 initSymbolCheck('check-digit', 'digit');
 initSymbolCheck('check-special-symbol', 'special-symbol');
 
+function getEyeIcon(show)
+{
+    return "<img class=\"eye-icon\" src=\"..\\icons\\" + (show ? "show-password-icon.png" : "hide-password-icon.png") + "\"\\>";
+}
+
 function initHideButton(id, prefName) {
     let setPref = function (enabled) {
         let elem = document.getElementById(id);
         elem.classList.remove(enabled ? "eye-hide" : "eye-show");
         elem.classList.add(enabled ? "eye-show" : "eye-hide");
         let targetInput = document.getElementById(elem.getAttribute("for"));
-        targetInput.type = enabled ? "text" : "password";
-        elem.innerHTML = enabled ? "Hide" : "Show";
+        targetInput.type = enabled ? "password" : "text";
+        elem.innerHTML = getEyeIcon(enabled);
     };
     let isChecked = e => e.classList.contains("eye-hide");
     initAbstractCheck(id, prefName, setPref, () => {}, isChecked, 'click')
 }
 
+initHideButton("toggle-main-password", "hide-site");
 initHideButton("toggle-site", "hide-site");
 initHideButton("toggle-login", "hide-login");
 initHideButton("toggle-result", "hide-result");

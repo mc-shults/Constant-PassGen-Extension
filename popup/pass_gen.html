@@ -15,24 +15,21 @@
           <span class="input-group-text">Password</span>
         </div>
         <input id="password" type="password" class="form-control">
+        <div id="toggle-main-password" class="input-group-append input-group-text btn btn-outline-primary eye-hide" for="password"></div>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <span class="input-group-text">Site</span>
         </div>
         <input id="site-string" type="text" class="form-control">
-        <div class="input-group-append">
-          <label id="toggle-site" class="input-group-text btn btn-outline-primary eye-show" for="site-string">Hide</label>
-        </div>
+        <div id="toggle-site" class="input-group-append input-group-text btn btn-outline-primary eye-show" for="site-string"></div>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
           <span class="input-group-text">Login</span>
         </div>
         <input id="login-string" type="text" class="form-control" placeholder="optional">
-        <div class="input-group-append">
-          <label id="toggle-login" class="input-group-text btn btn-outline-primary eye-show" for="login-string">Hide</label>
-        </div>
+        <div id="toggle-login" class="input-group-append input-group-text btn btn-outline-primary eye-show" for="login-string"></div>
       </div>
       <div class="btn btn-primary col-sm-12 rounded ok mb-2">OK</div>
       <div class="input-group mb-4">
@@ -40,11 +37,9 @@
           <span class="input-group-text">Result</span>
         </div>
         <input id="result" type="password" class="form-control" >
-        <div class="input-group-append">
-          <label id="toggle-result" class="input-group-text btn btn-outline-primary eye-hide" for="result">Show</label>
-        </div>
+        <div id="toggle-result" class="input-group-append input-group-text btn btn-outline-primary eye-hide" for="result"></div>
       </div>
-	  <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">Show settings</div>
+    <div id="toggle-settings" class="open-settings btn btn-outline-secondary col-sm-12 mb-2">Show settings</div>
 	  <div id="settings" hidden>
 	    <div class="text-center mb-3">
 	      <label class="container-checkbox container">Lowercase
