@@ -22,7 +22,7 @@ async function updateResult(){
 	let srcString = document.getElementById('password').value
 		+ document.getElementById('site-string').value
 		+ document.getElementById('login-string').value;
-	let resultString = await generatePassword(srcString, 0);
+	let resultString = generatePassword(srcString, 0);
 	let result = document.getElementById('result');
 	result.value = resultString;
 	if (copyResultToClipboard) {

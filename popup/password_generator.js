@@ -60,19 +60,19 @@ async function digest(str, algorithm) {
 }
 
 let algorithms = {
-    "SHA3-256" : async function (str) {
+    "SHA3-256" : function (str) {
         return parseHexString(sha3_256(str));
     },
-    "SHA-256" : async function (str) {
-        return await digest(str, 'SHA-256');
+    "SHA-256" : function (str) {
+        return parseHexString(sha256(str));
     },
-    "SHA-512" : async function (str) {
-        return await digest(str, 'SHA-512');
+    "SHA-512" : function (str) {
+        return parseHexString(sha512(str));
     },
-    "SHA-1" : async function (str) {
-        return await digest(str, 'SHA-1');
+    "SHA-1" : function (str) {
+        return parseHexString(sha1(str));
     },
-    "MD5" : async function (str) {
+    "MD5" : function (str) {
         return parseHexString(md5(str));
     },
 };
@@ -106,14 +106,14 @@ function getSelectedSymbolClassCount() {
     return Object.values(symbolClassMap).filter(x => x.selected).length;
 }
 
-async function generatePassword(srcString, iteration) {
+function generatePassword(srcString, iteration) {
     if (iteration > 1024) {
         return "";
     }
     for (let key in symbolClassMap) {
         symbolClassMap[key].used = false;
     }
-    let hexedArray = await algorithms[algorithmName](srcString);
+    let hexedArray = algorithms[algorithmName](srcString);
     let resultString = "";
     if (passwordLength === 0 || getSelectedSymbolClassCount() === 0) {
         return "";
