@@ -62,20 +62,26 @@
         <label class="mb-1">Password length</label>
         <div class="mb-2 text-center slider-main">
           <div >
-            <input type="number" id="password-length-number" class="slider-number-label" min="1" max="32" value="8"/>
+            <input type="number" id="password-length-number" class="border rounded slider-number-label" min="1" max="32" value="8"/>
           </div>
           <div class="slider">
             <input type="range" class="custom-range" min="1" max="32" value="8" id="password-length-slider">
           </div>
         </div>
         <label for="hash-algorithm">Algorithm: </label>
-        <select id="hash-algorithm">
-          <option value="SHA3-256">SHA3-256</option>
-          <option value="SHA-256">SHA-256</option>
-          <option value="SHA-512">SHA-512</option>
-          <option value="SHA-1">SHA-1</option>
-          <option value="MD5">MD5</option>
+        <select class="dropdown btn btn-outline-secondary mb-2" id="hash-algorithm">
+          <option class="dropdown-item" value="SHA3-256">SHA3-256</option>
+          <option class="dropdown-item" value="SHA-256">SHA-256</option>
+          <option class="dropdown-item" value="SHA-512">SHA-512</option>
+          <option class="dropdown-item" value="SHA-1">SHA-1</option>
+          <option class="dropdown-item" value="MD5">MD5</option>
         </select>
+        <div>
+          <label class="container-checkbox container">Save main password
+            <input type="checkbox" class="m-1" id="check-save-password" checked>
+            <span class="checkmark"/>
+          </label>
+        </div>
       </div>
     </div>
     <script src="md5.js"></script>
