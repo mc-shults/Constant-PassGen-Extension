@@ -58,35 +58,35 @@ if (chrome) {
   browser.tabs.query({currentWindow: true, active: true}).then(logTabs, onError);
 }
 
-var browserAPI = chrome || browser;
 document.getElementById('password').select();
+
+function loadPreference(prefName, callback) {
+    let callbackWrap = v => {
+        callback(v[prefName]);
+    };
+    if (browser) {
+        browser.storage.local.get(prefName).then(callbackWrap);
+    } else {
+        chrome.storage.local.get(prefName, callbackWrap);
+    }
+}
+
+function storePreference(obj) {
+    let browserApi = chrome || browser;
+    browserApi.storage.local.set(Object.fromEntries(obj));
+}
 
 function initAbstractCheck(id, prefName, setPref, setCheck, isCheck, eventType) {
     let elem = document.getElementById(id);
-    if (chrome) {
-        chrome.storage.local.get(prefName, v => {
-            if (v.hasOwnProperty(prefName)) {
-                let enabled = v[prefName];
-                setPref(enabled);
-                setCheck(elem, enabled);
-            }
-        });
-    } else {
-        browser.storage.local.get(prefName).then(v => {
-            if (v.hasOwnProperty(prefName)) {
-                let enabled = v[prefName];
-                setPref(enabled);
-                setCheck(elem, enabled);
-            }
-        });
-    }
+    loadPreference(prefName, enabled => {
+        if (enabled != null) {
+            setPref(enabled);
+            setCheck(elem, enabled);
+        }
+    });
     elem.addEventListener(eventType, function () {
         let enabled = isCheck(this);
-        if (chrome) {
-            chrome.storage.local.set(Object.fromEntries([[prefName, enabled]]));
-        } else {
-            browser.storage.local.set(Object.fromEntries([[prefName, enabled]]));
-        }
+        storePreference([[prefName, enabled]]);
         setPref(enabled);
     });
 }
@@ -133,14 +133,31 @@ document.addEventListener("click", (e) => {
     }
 });
 
-function syncInput(sliderId, valueId, eventType) {
+function syncInput(sliderId, valueId, eventType, additionalCallback) {
     let sliderElement = document.getElementById(sliderId);
     sliderElement.addEventListener(eventType, function () {
         let valueElement = document.getElementById(valueId);
         valueElement.value = sliderElement.value;
+        additionalCallback(sliderElement.value);
     });
 }
 
-syncInput("password-length-slider", "password-length-number", "change");
-syncInput("password-length-slider", "password-length-number", "input");
-syncInput("password-length-number", "password-length-slider", "input");
+let passwordChanged = v => {
+    storePreference([["password-length", v]]);
+    console.log(v);
+    passwordLength = v;
+};
+syncInput("password-length-slider", "password-length-number", "change", passwordChanged);
+syncInput("password-length-slider", "password-length-number", "input", passwordChanged);
+syncInput("password-length-number", "password-length-slider", "input", passwordChanged);
+
+loadPreference("password-length", l => {
+    if (l !== undefined) {
+        document.getElementById("password-length-slider").value = l;
+        document.getElementById("password-length-number").value = l;
+        passwordLength = l;
+    }
+});
+
+
+

@@ -80,7 +80,7 @@ let algorithms = {
 //#endregion Algorithms
 
 const algorithmName = 'SHA3-256';
-const passwordLength = 4;
+let passwordLength = 8;
 function getChar(value) {
     let currentIndex = value;
     if (currentIndex < 0){
@@ -103,8 +103,6 @@ function getChar(value) {
 }
 
 async function generatePassword(srcString, iteration) {
-    console.log(iteration);
-    console.log(srcString);
     if (iteration > 1024) {
         return "";
     }
@@ -113,6 +111,7 @@ async function generatePassword(srcString, iteration) {
     }
     let hexedArray = await algorithms[algorithmName](srcString);
     let resultString = "";
+    console.log(passwordLength);
     for(let i = 0; i < passwordLength; i++){
         resultString += getChar(hexedArray[i]);
     }
@@ -123,7 +122,6 @@ async function generatePassword(srcString, iteration) {
     if (allUsed) {
         return resultString;
     } else {
-        console.log(resultString);
         return generatePassword(srcString + hexedArray.reduce((accum, val) => accum + ("00" + val.toString(16)).slice(-2) ,""), iteration+1)
     }
 }
