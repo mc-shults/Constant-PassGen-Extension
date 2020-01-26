@@ -64,7 +64,7 @@ function loadPreference(prefName, callback) {
     let callbackWrap = v => {
         callback(v[prefName]);
     };
-    if (browser) {
+    if (typeof browser !== "undefined") {
         browser.storage.local.get(prefName).then(callbackWrap);
     } else {
         chrome.storage.local.get(prefName, callbackWrap);
