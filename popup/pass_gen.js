@@ -60,7 +60,13 @@ function logTabs(tabs) {
     let tab = tabs[0]; // Safe to assume there will only be one result
     let hostname = tab.url.split('/')[2];
     let hostnameParts = hostname.split('.');
-    document.getElementById('site-string').value = hostnameParts[hostnameParts.length - 2] + "." + hostnameParts[hostnameParts.length - 1];
+    let site = hostnameParts[hostnameParts.length - 2];
+    if (site) {
+        site += "." + hostnameParts[hostnameParts.length - 1];
+    } else {
+        site = hostnameParts[hostnameParts.length - 1];
+    }
+    document.getElementById('site-string').value = site;
 }
 function onError(err){
     document.getElementById('site-string').value = err;
