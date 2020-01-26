@@ -38,6 +38,12 @@ html, body {
   width: 0;
 }
 
+.container-checkbox {
+  padding-left: 18px !important;
+  padding-right: 9px !important;
+
+}
+
 .checkmark {
   position: absolute;
   top: 0;
