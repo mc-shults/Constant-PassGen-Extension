@@ -49,35 +49,34 @@
 	    <div class="mb-2 col-sm-12 text-center settings-header">Settings</div>
 	    <div class="text-center mb-3">
 	      <label class="container">Lowercase
-            <input type="checkbox" class="m-1" id="check-lowercase" checked>
-            <span class="checkmark"/>
-          </label>
+          <input type="checkbox" class="m-1" id="check-lowercase" checked>
+          <span class="checkmark"/>
+        </label>
 	      <label class="container">Uppercase
-            <input type="checkbox" class="m-1" id="check-uppercase">
-            <span class="checkmark"/>
-          </label>
+          <input type="checkbox" class="m-1" id="check-uppercase">
+          <span class="checkmark"/>
+        </label>
 	      <label class="container">Digits
-            <input type="checkbox" class="m-1" id="check-digit" checked>
-            <span class="checkmark"/>
-          </label>
+          <input type="checkbox" class="m-1" id="check-digit" checked>
+          <span class="checkmark"/>
+        </label>
 	      <label class="container">Special Symbols
-            <input type="checkbox" class="m-1" id="check-special-symbol">
-            <span class="checkmark"/>
-          </label>
-		</div>
-		
-        <label class="mb-1">Password length</label>
-        <div class="mb-2 text-center slider-main">
-		  <span class="slider-number-label">8</span>
-		  <div class="slider">
-		    <input type="range" class="custom-range" min="1" max="32" id="password-length">
-		  </div>
-	    </div>
-	  </div>	  
+          <input type="checkbox" class="m-1" id="check-special-symbol">
+          <span class="checkmark"/>
+        </label>
+      </div>
+      <label class="mb-1">Password length</label>
+      <div class="mb-2 text-center slider-main">
+        <div >
+          <input type="number" id="slider-number" class="slider-number-label" value="8"/>
+        </div>
+        <div class="slider">
+          <input id="slider-range" type="range" class="custom-range" min="1" max="32" value="8" id="password-length">
+        </div>
+      </div>
     </div>
     <script src="md5.js"></script>
     <script src="sha3.js"></script>
     <script src="pass_gen.js"></script>
   </body>
-
 </html>

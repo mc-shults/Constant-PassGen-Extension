@@ -82,10 +82,9 @@ html, body {
 }
 
 .slider-number-label {
-  display: inline;
-  width: 10pt;
-  float:left;
   display: flex;
+  width: 30pt;
+  float:left;
 }
 
 .slider {

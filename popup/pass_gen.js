@@ -242,3 +242,24 @@ document.addEventListener("click", (e) => {
         e.target.classList.add("open-settings");
     }
 });
+
+function initSlider(sliderId, valueId, eventType) {
+    let sliderElement = document.getElementById(sliderId);
+    sliderElement.addEventListener(eventType, function () {
+        let valueElement = document.getElementById(valueId);
+        valueElement.innerHTML = sliderElement.value;
+    });
+}
+
+function initSliderLabel(valueId, sliderId, eventType) {
+	let valueElement = document.getElementById(valueId);
+    valueElement.addEventListener(eventType, function () {
+		let sliderElement = document.getElementById(sliderId);
+        sliderElement.value = valueElement.value;
+    });
+}
+
+initSlider("slider-range", "slider-number", "change");
+initSlider("slider-range", "slider-number", "input");
+
+initSliderLabel("slider-number", "slider-range", "input");
