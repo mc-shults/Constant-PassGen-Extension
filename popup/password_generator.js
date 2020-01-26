@@ -79,7 +79,7 @@ let algorithms = {
 
 //#endregion Algorithms
 
-const algorithmName = 'SHA3-256';
+let algorithmName = 'SHA3-256';
 let passwordLength = 8;
 function getChar(value) {
     let currentIndex = value;

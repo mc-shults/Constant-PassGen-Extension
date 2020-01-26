@@ -188,4 +188,17 @@ function symbolCountChanged(count) {
     setMin(count);
 }
 
+loadPreference("algorithm-name", v => {
+    if (v !== undefined) algorithmName = v;
+    for (let option of document.getElementById("hash-algorithm").options) {
+        console.log(option.value === algorithmName);
+        console.log(option.value);
+        option.selected = option.value === algorithmName;
+    }
+    document.getElementById("hash-algorithm").addEventListener("change", v => {
+        algorithmName = v.target.selectedOptions[0].value;
+        storePreference([["algorithm-name", algorithmName]]);
+    });
+} );
+
 
