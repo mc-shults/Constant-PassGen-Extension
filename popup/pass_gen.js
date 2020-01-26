@@ -26,10 +26,6 @@ document.getElementById('password').addEventListener("keyup", dataChanged);
 document.getElementById('site-string').addEventListener("keyup", dataChanged);
 document.getElementById('login-string').addEventListener("keyup", dataChanged);
 
-function getSelectedSymbolClassCount() {
-    return Object.values(symbolClassMap).filter(x => x.selected).length;
-}
-
 function toggleSettings() {
     let settingsElement = document.getElementById("settings");
     settingsElement.hidden ^= true;
@@ -94,8 +90,14 @@ function initAbstractCheck(id, prefName, setPref, setCheck, isCheck, eventType) 
 function initCheck(id, prefName, setPref) {
     initAbstractCheck(id, prefName, setPref, (elem, enabled) => elem.checked = enabled, elem => elem.checked, 'change')
 }
+
 function initSymbolCheck(id, symbolName) {
-    initCheck(id, symbolName, (v) => {symbolClassMap[symbolName].selected = v;});
+    initCheck(id, symbolName, (v) => {
+        symbolClassMap[symbolName].selected = v;
+        if (typeof symbolCountChanged !== "undefined") {
+            symbolCountChanged(getSelectedSymbolClassCount());
+        }
+    });
 }
 initSymbolCheck('check-lowercase', 'lowercase');
 initSymbolCheck('check-uppercase', 'uppercase');
@@ -150,13 +152,13 @@ function syncInput(srcId, destId, eventType, additionalCallback) {
     });
 }
 
-let passwordChanged = v => {
+let passwordLengthChanged = v => {
     storePreference([["password-length", v]]);
     passwordLength = v;
 };
-syncInput("password-length-slider", "password-length-number", "change", passwordChanged);
-syncInput("password-length-slider", "password-length-number", "input", passwordChanged);
-syncInput("password-length-number", "password-length-slider", "input", passwordChanged);
+syncInput("password-length-slider", "password-length-number", "change", passwordLengthChanged);
+syncInput("password-length-slider", "password-length-number", "input", passwordLengthChanged);
+syncInput("password-length-number", "password-length-slider", "input", passwordLengthChanged);
 
 loadPreference("password-length", l => {
     if (l !== undefined) {
@@ -166,5 +168,22 @@ loadPreference("password-length", l => {
     }
 });
 
+function setMin(min) {
+    let slider = document.getElementById("password-length-slider");
+    let number = document.getElementById("password-length-number");
+    slider.min = min;
+    number.min = min;
+    if (passwordLength < min) {
+        passwordLengthChanged(min);
+        slider.value = min;
+        number.value = min;
+    }
+}
+
+setMin(getSelectedSymbolClassCount());
+
+function symbolCountChanged(count) {
+    setMin(count);
+}
 
 
