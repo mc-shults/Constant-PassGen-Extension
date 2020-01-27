@@ -17,7 +17,7 @@
 	"tabs"
   ],
   
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "ConstPassGen@ext.mozilla.org",
       "strict_min_version": "57.0"
