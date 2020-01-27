@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "Constant PassGen"
+  },
+  "appDesc": {
+    "message": "Generate a password based on the main password and site."
+  }
+}
