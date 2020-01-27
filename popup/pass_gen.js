@@ -156,8 +156,11 @@ initSymbolCheck('check-special-symbol', 'special-symbol');
 function getEyeIcon(show)
 {
     let browserApi = chrome || browser;
-    let imrUrl = browserApi.extension.getURL("icons/" +  (show ? "show-password-icon.png" : "hide-password-icon.png"));
-    return `<img class="eye-icon" src="${imrUrl}">`;
+    let imgUrl = browserApi.extension.getURL("icons/" +  (show ? "show-password-icon.png" : "hide-password-icon.png"));
+	let elem = document.createElement("img");
+	elem.classList.add("eye-icon");
+	elem.setAttribute("src", imgUrl);
+    return elem;
 }
 
 function initHideButton(id, prefName, defaultState) {
@@ -167,7 +170,10 @@ function initHideButton(id, prefName, defaultState) {
         elem.classList.add(enabled ? "eye-show" : "eye-hide");
         let targetInput = document.getElementById(elem.getAttribute("for"));
         targetInput.type = enabled ? "password" : "text";
-        elem.innerHTML = getEyeIcon(enabled);
+        while (elem.firstChild) {
+           elem.removeChild(elem.firstChild);
+        }
+        elem.appendChild(getEyeIcon(enabled));
     };
     setPref(defaultState);
     let isChecked = e => e.classList.contains("eye-hide");
